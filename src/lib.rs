@@ -62,7 +62,7 @@ use serde::{Deserialize, Serialize};
 /// assert_eq!(p1 + p2, Percentage::from(0.2));
 /// assert_eq!(p1 + 0.2, Percentage::from(0.3));
 /// ```
-#[derive(Copy, Clone, PartialEq, Eq, Serialize, Deserialize)]
+#[derive(Copy, Clone, PartialEq, Eq, Ord, PartialOrd, Serialize, Deserialize)]
 pub struct Percentage(Decimal);
 
 impl From<Decimal> for Percentage {
@@ -269,6 +269,16 @@ mod tests {
         let p2 = Percentage::try_from("0.00000015").unwrap();
         let p3 = Percentage::from(0.2);
         let p4 = Percentage::from(1.2);
+
+        assert!(p1 > p3);
+        assert!(p2 < p1);
+        assert!(p2 < p3);
+        assert!(p3 < p4);
+        assert!(p3 <= p4);
+        assert!(p4 > p3);
+        assert!(p4 > p1);
+        assert!(p4 > p1);
+        assert!(p4 >= p4);
 
         assert_eq!(1 - p1, Percentage::from(0.5));
         assert_eq!(p1 - 0.2, Percentage::from(0.3));
